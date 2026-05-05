@@ -19,10 +19,7 @@ pub fn main() {
 
     match matches.subcommand() {
         Some(("new", sub_matches)) => {
-            let input = sub_matches.get_one::<String>("INPUT").unwrap();
-            let template = sub_matches.get_one::<String>("template").unwrap_or(&String::from("default"));
-            println!("Input: {}", *input);
-            println!("Template: {}", *template);
+            println!("Creating a new NeoStackRS project...");
         }
         _ => unreachable!(), // clap will ensure we don't get here
     }
