@@ -21,8 +21,8 @@ pub fn main() {
         Some(("new", sub_matches)) => {
             let input = sub_matches.get_one::<String>("INPUT").unwrap();
             let template = sub_matches.get_one::<String>("template").unwrap_or(&String::from("default"));
-            println!("Input: {}", input);
-            println!("Template: {}", template);
+            println!("Input: {}", *input);
+            println!("Template: {}", *template);
         }
         _ => unreachable!(), // clap will ensure we don't get here
     }
