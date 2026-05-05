@@ -1,0 +1,43 @@
+{
+  "$schema": "https://www.schemastore.org/language-configuration.json",
+  "comments": {
+    "lineComment": "#"
+  },
+  "brackets": [
+    ["(", ")"],
+    ["{", "}"]
+  ],
+  "autoClosingPairs": [
+    { "open": "(", "close": ")" },
+    { "open": "{", "close": "}" },
+    { "open": "\"", "close": "\"", "notIn": ["string"] },
+    { "open": "'", "close": "'", "notIn": ["string"] },
+    { "open": "`", "close": "`", "notIn": ["string"] }
+  ],
+  "surroundingPairs": [
+    ["(", ")"],
+    ["{", "}"],
+    ["\"", "\""],
+    ["'", "'"],
+    ["`", "`"]
+  ],
+  "onEnterRules": [
+    {
+      "beforeText": "^\\s*(=macro|=block|=if|=else|=elseif|=unless|=for|=each|=while|=until|=loop|=try|=catch|=finally|=set|=assign).*$",
+      "action": {
+        "indent": "indent"
+      }
+    }
+  ],
+  "wordPattern": "[a-zA-Z_][a-zA-Z0-9_-]*",
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(=macro|=block|=if|=else|=elseif|=unless|=for|=each|=while|=until|=loop|=try|=catch|=finally)\\b.*",
+    "decreaseIndentPattern": "^\\s*=end\\b"
+  },
+  "folding": {
+    "markers": {
+      "start": "^\\s*(=macro|=block|=if|=for|=each|=while|=until|=loop|=try|=set|=assign)\\b",
+      "end": "^\\s*=end\\b"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "crates/neo-cli",
+    "crates/neo-ml*",
+]
+resolver = "3"

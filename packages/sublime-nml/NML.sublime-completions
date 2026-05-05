@@ -1,0 +1,23 @@
+{
+  "scope": "source.nml",
+  "completions": [
+    { "trigger": "=macro\t=macro directive", "contents": "=macro('${1:name}', {${2:args}})\n\t$0\n=end" },
+    { "trigger": "=set\t=set inline", "contents": "=set(${1:name}='${2:value}')" },
+    { "trigger": "=setb\t=set block", "contents": "=set(${1:name})\n\t$0\n=end" },
+    { "trigger": "=assign\t=assign inline", "contents": "=assign(${1:name}='${2:value}')" },
+    { "trigger": "=assignb\t=assign block", "contents": "=assign(${1:name})\n\t$0\n=end" },
+    { "trigger": "=include\t=include partial", "contents": "=include(${1:partials.name})" },
+    { "trigger": "=extends\t=extends layout", "contents": "=extends(${1:layouts/base.nml})" },
+    { "trigger": "=block\t=block content", "contents": "=block(${1:name})\n\t$0\n=end" },
+    { "trigger": "=end\t=end closer", "contents": "=end" },
+
+    { "trigger": "@tag\tinline element", "contents": "@${1:tag}(${2:attrs}) ${3:content}/" },
+    { "trigger": "@empty\tempty element", "contents": "@${1:tag}(${2:attrs})/" },
+    { "trigger": "$void\tvoid element", "contents": "\\$${1:tag}(${2:attrs})/" },
+    { "trigger": "$block\tblock element", "contents": "\\$${1:tag}(${2:attrs})\n\t$0\n%${1:tag}" },
+    { "trigger": "$style\tstyle block", "contents": "\\$style()\n\t$0\n%style" },
+    { "trigger": "$script\tscript block", "contents": "\\$script()\n\t$0\n%script" },
+
+    { "trigger": "&macro\tmacro call", "contents": "&${1:name}(${2:args})" }
+  ]
+}

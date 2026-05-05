@@ -1,0 +1,143 @@
+{
+  "NML Macro Definition": {
+    "prefix": "=macro",
+    "body": [
+      "=macro('${1:name}', {${2:args}})",
+      "  $0",
+      "=end"
+    ],
+    "description": "Define a reusable NML macro"
+  },
+
+  "NML Macro Call": {
+    "prefix": "&",
+    "body": [
+      "&${1:name}(${2:args})"
+    ],
+    "description": "Call a macro"
+  },
+
+  "NML Set Inline": {
+    "prefix": "=set",
+    "body": [
+      "=set(${1:name}='${2:value}')"
+    ],
+    "description": "Set an inline variable"
+  },
+
+  "NML Set Block": {
+    "prefix": "=setb",
+    "body": [
+      "=set(${1:name})",
+      "  $0",
+      "=end"
+    ],
+    "description": "Set a block variable"
+  },
+
+  "NML Assign Inline": {
+    "prefix": "=assign",
+    "body": [
+      "=assign(${1:name}='${2:value}')"
+    ],
+    "description": "Assign an inline variable (Jekyll-style alias for =set)"
+  },
+
+  "NML Assign Block": {
+    "prefix": "=assignb",
+    "body": [
+      "=assign(${1:name})",
+      "  $0",
+      "=end"
+    ],
+    "description": "Assign a block variable (Jekyll-style alias for =set block)"
+  },
+
+  "NML Include": {
+    "prefix": "=include",
+    "body": [
+      "=include(${1:partials.name})"
+    ],
+    "description": "Include a partial using dot notation"
+  },
+
+  "NML Extends": {
+    "prefix": "=extends",
+    "body": [
+      "=extends(${1:layouts/base.nml})"
+    ],
+    "description": "Extend a layout template"
+  },
+
+  "NML Block": {
+    "prefix": "=block",
+    "body": [
+      "=block(${1:name})",
+      "  $0",
+      "=end"
+    ],
+    "description": "Define a named content block"
+  },
+
+  "NML Inline Element": {
+    "prefix": "@",
+    "body": [
+      "@${1:tag}(${2:attrs}) ${3:content}/"
+    ],
+    "description": "NML inline element — outputs <tag>content</tag>"
+  },
+
+  "NML Empty Element": {
+    "prefix": "@e",
+    "body": [
+      "@${1:tag}(${2:attrs})/"
+    ],
+    "description": "NML empty paired element — outputs <tag></tag>"
+  },
+
+  "NML Void Element": {
+    "prefix": "$v",
+    "body": [
+      "\\$${1:tag}(${2:attrs})/"
+    ],
+    "description": "NML void/self-closing element — outputs <tag />"
+  },
+
+  "NML Block Element": {
+    "prefix": "$b",
+    "body": [
+      "\\$${1:tag}(${2:attrs})",
+      "  $0",
+      "%${1:tag}"
+    ],
+    "description": "NML block element with open/close — outputs <tag>\\n</tag>"
+  },
+
+  "NML Style Block": {
+    "prefix": "$style",
+    "body": [
+      "\\$style()",
+      "  $0",
+      "%style"
+    ],
+    "description": "Inline style block — parsed by neo-asset-css-parser"
+  },
+
+  "NML Script Block": {
+    "prefix": "$script",
+    "body": [
+      "\\$script()",
+      "  $0",
+      "%script"
+    ],
+    "description": "Inline script block — parsed by neo-asset-js-parser"
+  },
+
+  "NML Interpolation": {
+    "prefix": "{",
+    "body": [
+      "{${1:variable}}"
+    ],
+    "description": "Text content interpolation"
+  }
+}

@@ -1,0 +1,17 @@
+[languages.nml]
+name = "NML"
+grammar = "nml"
+path_suffixes = ["nml"]
+line_comments = ["# "]
+brackets = [
+  { start = "(", end = ")" },
+  { start = "{", end = "}" },
+]
+auto_indent_using_last_non_empty_line = true
+increase_indent_pattern = "^\\s*(=macro|=block|=if|=else|=elseif|=unless|=for|=each|=while|=until|=loop|=try|=catch|=finally|=set|=assign)\\b.*"
+decrease_indent_pattern = "^\\s*=end\\b"
+
+[grammars.nml]
+repository = "https://github.com/neostack/neostack"
+commit = "HEAD"
+path = "packages/nml-zed/grammars"

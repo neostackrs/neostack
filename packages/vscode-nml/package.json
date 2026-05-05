@@ -1,0 +1,52 @@
+{
+  "name": "nml-language",
+  "displayName": "NML - NeoStack Markup Language",
+  "description": "Syntax highlighting and language support for NeoStack Markup Language (.nml)",
+  "version": "0.1.0",
+  "publisher": "neostack",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "nml",
+    "neostack",
+    "markup",
+    "template",
+    "language"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neostack/neostack"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "nml",
+        "aliases": ["NML", "nml", "NeoStack Markup Language"],
+        "extensions": [".nml"],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/nml-light.png",
+          "dark": "./icons/nml-dark.png"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "nml",
+        "scopeName": "source.nml",
+        "path": "./syntaxes/nml.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "nml",
+        "path": "./snippets/nml.json"
+      }
+    ]
+  }
+}

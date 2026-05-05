@@ -1,0 +1,358 @@
+{
+  "$schema": "https://www.schemastore.org/tmlanguage.json",
+  "name": "NeoStack Markup Language",
+  "scopeName": "source.nml",
+  "fileTypes": ["nml"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#frontmatter" },
+    { "include": "#directives" },
+    { "include": "#macro-call" },
+    { "include": "#void-element" },
+    { "include": "#block-element-open" },
+    { "include": "#block-element-close" },
+    { "include": "#inline-element" },
+    { "include": "#interpolation" },
+    { "include": "#strings" }
+  ],
+  "repository": {
+    "comments": {
+      "match": "#.*$",
+      "name": "comment.line.hash.nml"
+    },
+
+    "frontmatter": {
+      "begin": "^---\\s*$",
+      "end": "^---\\s*$",
+      "name": "meta.frontmatter.nml",
+      "beginCaptures": { "0": { "name": "punctuation.definition.frontmatter.begin.nml" } },
+      "endCaptures": { "0": { "name": "punctuation.definition.frontmatter.end.nml" } },
+      "contentName": "string.unquoted.frontmatter.nml"
+    },
+
+    "directives": {
+      "patterns": [
+        {
+          "match": "=end\\b",
+          "name": "keyword.control.end.nml"
+        },
+        {
+          "begin": "=(macro|set|assign|include|extends|block)\\b",
+          "end": "$",
+          "name": "meta.directive.v1.nml",
+          "beginCaptures": {
+            "0": { "name": "keyword.control.directive.v1.nml" }
+          },
+          "patterns": [
+            { "include": "#directive-arguments" }
+          ]
+        },
+        {
+          "begin": "=(super|prepend|append|embed|use|partial|slot|fill|capture|component)\\b",
+          "end": "$",
+          "name": "meta.directive.composition.nml",
+          "beginCaptures": {
+            "0": { "name": "keyword.control.directive.reserved.nml" }
+          },
+          "patterns": [
+            { "include": "#directive-arguments" }
+          ]
+        },
+        {
+          "begin": "=(if|else|elseif|unless|for|each|while|until|loop|break|continue|when|case|match|switch|default)\\b",
+          "end": "$",
+          "name": "meta.directive.control.nml",
+          "beginCaptures": {
+            "0": { "name": "keyword.control.flow.nml" }
+          },
+          "patterns": [
+            { "include": "#directive-arguments" }
+          ]
+        },
+        {
+          "begin": "=(try|catch|finally|raise|throw)\\b",
+          "end": "$",
+          "name": "meta.directive.error.nml",
+          "beginCaptures": {
+            "0": { "name": "keyword.control.error.nml" }
+          },
+          "patterns": [
+            { "include": "#directive-arguments" }
+          ]
+        },
+        {
+          "begin": "=(store|state|prop|emit|bind|watch|computed)\\b",
+          "end": "$",
+          "name": "meta.directive.state.nml",
+          "beginCaptures": {
+            "0": { "name": "keyword.control.directive.reserved.nml" }
+          },
+          "patterns": [
+            { "include": "#directive-arguments" }
+          ]
+        },
+        {
+          "begin": "=(import|require|asset|style|script)\\b",
+          "end": "$",
+          "name": "meta.directive.assets.nml",
+          "beginCaptures": {
+            "0": { "name": "keyword.control.directive.reserved.nml" }
+          },
+          "patterns": [
+            { "include": "#directive-arguments" }
+          ]
+        },
+        {
+          "begin": "=(cache|nocache|lazy)\\b",
+          "end": "$",
+          "name": "meta.directive.cache.nml",
+          "beginCaptures": {
+            "0": { "name": "keyword.control.directive.reserved.nml" }
+          },
+          "patterns": [
+            { "include": "#directive-arguments" }
+          ]
+        },
+        {
+          "begin": "=(debug|log|warn|error|todo|deprecated)\\b",
+          "end": "$",
+          "name": "meta.directive.dev.nml",
+          "beginCaptures": {
+            "0": { "name": "keyword.other.directive.dev.nml" }
+          },
+          "patterns": [
+            { "include": "#directive-arguments" }
+          ]
+        },
+        {
+          "begin": "=(t|locale|translate)\\b",
+          "end": "$",
+          "name": "meta.directive.i18n.nml",
+          "beginCaptures": {
+            "0": { "name": "keyword.control.directive.reserved.nml" }
+          },
+          "patterns": [
+            { "include": "#directive-arguments" }
+          ]
+        },
+        {
+          "begin": "=(raw|escape|comment|yield)\\b",
+          "end": "$",
+          "name": "meta.directive.misc.nml",
+          "beginCaptures": {
+            "0": { "name": "keyword.control.directive.reserved.nml" }
+          },
+          "patterns": [
+            { "include": "#directive-arguments" }
+          ]
+        }
+      ]
+    },
+
+    "directive-arguments": {
+      "begin": "\\(",
+      "end": "\\)",
+      "beginCaptures": { "0": { "name": "punctuation.definition.arguments.begin.nml" } },
+      "endCaptures": { "0": { "name": "punctuation.definition.arguments.end.nml" } },
+      "patterns": [
+        { "include": "#strings" },
+        { "include": "#interpolation" },
+        {
+          "match": "\\.\\.\\.([a-zA-Z_][a-zA-Z0-9_]*)",
+          "name": "meta.spread.nml",
+          "captures": {
+            "0": { "name": "keyword.operator.spread.nml" },
+            "1": { "name": "variable.parameter.rest.nml" }
+          }
+        },
+        {
+          "match": "([a-zA-Z_][a-zA-Z0-9_-]*)\\s*(=)",
+          "captures": {
+            "1": { "name": "variable.parameter.named.nml" },
+            "2": { "name": "keyword.operator.assignment.nml" }
+          }
+        },
+        {
+          "match": "([a-zA-Z_][a-zA-Z0-9_-]*)\\s*(:)",
+          "captures": {
+            "1": { "name": "variable.parameter.nml" },
+            "2": { "name": "punctuation.separator.key-value.nml" }
+          }
+        },
+        {
+          "match": "[a-zA-Z0-9_][a-zA-Z0-9_./-]*\\.nml\\b",
+          "name": "string.unquoted.path.nml"
+        },
+        {
+          "match": "[a-zA-Z][a-zA-Z0-9]*(?:\\.[a-zA-Z][a-zA-Z0-9]*)+",
+          "name": "string.unquoted.dot-path.nml"
+        },
+        {
+          "match": "\\{([a-zA-Z_][a-zA-Z0-9_,\\s]*)\\}",
+          "name": "meta.destructure.nml",
+          "captures": {
+            "0": { "name": "punctuation.definition.destructure.nml" },
+            "1": { "name": "variable.parameter.destructured.nml" }
+          }
+        }
+      ]
+    },
+
+    "macro-call": {
+      "begin": "(&)([a-zA-Z_][a-zA-Z0-9_-]*)(\\()",
+      "end": "\\)",
+      "name": "meta.macro-call.nml",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.macro.nml" },
+        "2": { "name": "entity.name.function.macro.nml" },
+        "3": { "name": "punctuation.definition.arguments.begin.nml" }
+      },
+      "endCaptures": { "0": { "name": "punctuation.definition.arguments.end.nml" } },
+      "patterns": [
+        { "include": "#tag-attributes" }
+      ]
+    },
+
+    "void-element": {
+      "begin": "(\\$)([a-zA-Z][a-zA-Z0-9-]*)(\\()",
+      "end": "\\)/",
+      "name": "meta.element.void.nml",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.void.nml" },
+        "2": { "name": "entity.name.tag.nml" },
+        "3": { "name": "punctuation.definition.attributes.begin.nml" }
+      },
+      "endCaptures": { "0": { "name": "punctuation.definition.tag.void.end.nml" } },
+      "patterns": [
+        { "include": "#tag-attributes" }
+      ]
+    },
+
+    "block-element-open": {
+      "begin": "(\\$)([a-zA-Z][a-zA-Z0-9-]*)(\\()",
+      "end": "\\)",
+      "name": "meta.element.block.open.nml",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.nml" },
+        "2": { "name": "entity.name.tag.nml" },
+        "3": { "name": "punctuation.definition.attributes.begin.nml" }
+      },
+      "endCaptures": { "0": { "name": "punctuation.definition.attributes.end.nml" } },
+      "patterns": [
+        { "include": "#tag-attributes" }
+      ]
+    },
+
+    "block-element-close": {
+      "match": "(%)([a-zA-Z][a-zA-Z0-9-]*)",
+      "name": "meta.element.block.close.nml",
+      "captures": {
+        "1": { "name": "punctuation.definition.tag.end.nml" },
+        "2": { "name": "entity.name.tag.nml" }
+      }
+    },
+
+    "inline-element": {
+      "begin": "(@)([a-zA-Z][a-zA-Z0-9-]*)(\\()",
+      "end": "(/?)\\)",
+      "name": "meta.element.inline.nml",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.inline.nml" },
+        "2": { "name": "entity.name.tag.nml" },
+        "3": { "name": "punctuation.definition.attributes.begin.nml" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.attributes.end.nml" }
+      },
+      "patterns": [
+        { "include": "#tag-attributes" }
+      ]
+    },
+
+    "tag-attributes": {
+      "patterns": [
+        { "include": "#strings" },
+        { "include": "#interpolation" },
+        {
+          "match": "\\.\\.\\.([a-zA-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "0": { "name": "keyword.operator.spread.nml" },
+            "1": { "name": "variable.parameter.rest.nml" }
+          }
+        },
+        {
+          "match": "([a-zA-Z_][a-zA-Z0-9_-]*)\\s*(:)",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.nml" },
+            "2": { "name": "punctuation.separator.key-value.nml" }
+          }
+        }
+      ]
+    },
+
+    "interpolation": {
+      "patterns": [
+        {
+          "begin": "(?<!\\$)\\{",
+          "end": "\\}",
+          "name": "meta.interpolation.content.nml",
+          "beginCaptures": { "0": { "name": "punctuation.definition.interpolation.begin.nml" } },
+          "endCaptures": { "0": { "name": "punctuation.definition.interpolation.end.nml" } },
+          "contentName": "variable.other.interpolated.nml"
+        }
+      ]
+    },
+
+    "strings": {
+      "patterns": [
+        {
+          "begin": "\"",
+          "end": "\"",
+          "name": "string.quoted.double.nml",
+          "beginCaptures": { "0": { "name": "punctuation.definition.string.begin.nml" } },
+          "endCaptures": { "0": { "name": "punctuation.definition.string.end.nml" } },
+          "patterns": [
+            { "include": "#string-interpolation" },
+            { "include": "#escape" }
+          ]
+        },
+        {
+          "begin": "'",
+          "end": "'",
+          "name": "string.quoted.single.nml",
+          "beginCaptures": { "0": { "name": "punctuation.definition.string.begin.nml" } },
+          "endCaptures": { "0": { "name": "punctuation.definition.string.end.nml" } },
+          "patterns": [
+            { "include": "#string-interpolation" },
+            { "include": "#escape" }
+          ]
+        },
+        {
+          "begin": "`",
+          "end": "`",
+          "name": "string.quoted.backtick.nml",
+          "beginCaptures": { "0": { "name": "punctuation.definition.string.begin.nml" } },
+          "endCaptures": { "0": { "name": "punctuation.definition.string.end.nml" } },
+          "patterns": [
+            { "include": "#string-interpolation" },
+            { "include": "#escape" }
+          ]
+        }
+      ]
+    },
+
+    "string-interpolation": {
+      "begin": "\\$\\{",
+      "end": "\\}",
+      "name": "meta.interpolation.string.nml",
+      "beginCaptures": { "0": { "name": "punctuation.definition.interpolation.begin.nml" } },
+      "endCaptures": { "0": { "name": "punctuation.definition.interpolation.end.nml" } },
+      "contentName": "variable.other.interpolated.nml"
+    },
+
+    "escape": {
+      "match": "\\\\.",
+      "name": "constant.character.escape.nml"
+    }
+  }
+}

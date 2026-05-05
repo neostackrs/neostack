@@ -1,0 +1,26 @@
+---
+title: Welcome to NeoStack
+description: >
+  Welcome to my new NeoStack site!
+---
+=extends(../layouts/base.nml)
+
+=block(content)
+  @h1 {title}/
+  @p {description}/
+=end
+
+=block(styles)
+  $style
+    h1 {
+      color: #2c3e50;
+      font-family: system-ui, sans-serif;
+    }
+  %style
+=end
+
+=block(scripts)
+  $script
+    console.log("Hello, world!");
+  %script
+=end

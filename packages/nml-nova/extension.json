@@ -1,0 +1,15 @@
+{
+  "identifier": "neostack.nml",
+  "name": "NML",
+  "organization": "NeoStack",
+  "description": "NeoStack Markup Language syntax highlighting for Nova",
+  "version": "0.1",
+  "categories": ["languages"],
+  "license": "MIT",
+  "repository": "https://github.com/neostack/neostack",
+  "bugs": "https://github.com/neostack/neostack/issues",
+  "main": "main.js",
+  "activationEvents": [
+    "onLanguage:nml"
+  ]
+}

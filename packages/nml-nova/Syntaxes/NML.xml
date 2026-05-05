@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<syntax name="nml">
+  <meta>
+    <name>NML</name>
+    <type>markup</type>
+    <preferred-file-extension>nml</preferred-file-extension>
+  </meta>
+
+  <detectors>
+    <extension priority="1.0">nml</extension>
+  </detectors>
+
+  <indentation>
+    <increase>
+      <expression>^\\s*(=macro|=block|=if|=else|=elseif|=unless|=for|=each|=while|=until|=loop|=try|=catch|=finally|=set|=assign)\\b</expression>
+    </increase>
+    <decrease>
+      <expression>^\\s*=end\\b</expression>
+    </decrease>
+  </indentation>
+
+  <comments>
+    <single>
+      <expression>//</expression>
+    </single>
+  </comments>
+
+  <brackets>
+    <pair open="(" close=")" />
+    <pair open="{" close="}" />
+  </brackets>
+
+  <surrounding-pairs>
+    <pair open="(" close=")" />
+    <pair open="{" close="}" />
+    <pair open="&quot;" close="&quot;" />
+    <pair open="'" close="'" />
+    <pair open="`" close="`" />
+  </surrounding-pairs>
+
+  <scopes>
+
+    <!-- Comments -->
+    <scope name="nml.comment.line">
+      <expression>//.*$</expression>
+    </scope>
+
+    <!-- Frontmatter -->
+    <scope name="nml.frontmatter">
+      <starts-with>
+        <expression>^---\s*$</expression>
+        <capture number="0" name="nml.frontmatter.delimiter" />
+      </starts-with>
+      <ends-with>
+        <expression>^---\s*$</expression>
+        <capture number="0" name="nml.frontmatter.delimiter" />
+      </ends-with>
+      <subscopes>
+        <scope name="nml.frontmatter.content">
+          <expression>.+</expression>
+        </scope>
+      </subscopes>
+    </scope>
+
+    <!-- =end closer -->
+    <scope name="nml.directive.end">
+      <expression>=end\b</expression>
+    </scope>
+
+    <!-- v1 Directives -->
+    <scope name="nml.directive.v1">
+      <expression>=(macro|set|assign|include|extends|block)\b</expression>
+    </scope>
+
+    <!-- Control Flow Directives -->
+    <scope name="nml.directive.control">
+      <expression>=(if|else|elseif|unless|for|each|while|until|loop|break|continue|when|case|match|switch|default)\b</expression>
+    </scope>
+
+    <!-- Error Handling Directives -->
+    <scope name="nml.directive.error">
+      <expression>=(try|catch|finally|raise|throw)\b</expression>
+    </scope>
+
+    <!-- Dev Tooling Directives -->
+    <scope name="nml.directive.dev">
+      <expression>=(debug|log|warn|error|todo|deprecated)\b</expression>
+    </scope>
+
+    <!-- Reserved Post-v1 Directives -->
+    <scope name="nml.directive.reserved">
+      <expression>=(super|prepend|append|embed|use|partial|slot|fill|capture|component|store|state|prop|emit|bind|watch|computed|import|require|asset|style|script|cache|nocache|lazy|raw|escape|comment|yield|t|locale|translate)\b</expression>
+    </scope>
+
+    <!-- Macro Call &name() -->
+    <scope name="nml.macro-call">
+      <starts-with>
+        <expression>(&amp;)([a-zA-Z_][a-zA-Z0-9_-]*)(\()</expression>
+        <capture number="1" name="nml.macro-call.sigil" />
+        <capture number="2" name="nml.macro-call.name" />
+        <capture number="3" name="nml.macro-call.arguments.begin" />
+      </starts-with>
+      <ends-with>
+        <expression>\)</expression>
+        <capture number="0" name="nml.macro-call.arguments.end" />
+      </ends-with>
+      <subscopes>
+        <include syntax="self" collection="tag-attributes" />
+      </subscopes>
+    </scope>
+
+    <!-- Void Element $tag()/ -->
+    <scope name="nml.element.void">
+      <starts-with>
+        <expression>(\$)([a-zA-Z][a-zA-Z0-9-]*)(\()</expression>
+        <capture number="1" name="nml.element.void.sigil" />
+        <capture number="2" name="nml.element.void.tag" />
+        <capture number="3" name="nml.element.void.attributes.begin" />
+      </starts-with>
+      <ends-with>
+        <expression>\)/</expression>
+        <capture number="0" name="nml.element.void.end" />
+      </ends-with>
+      <subscopes>
+        <include syntax="self" collection="tag-attributes" />
+      </subscopes>
+    </scope>
+
+    <!-- Block Element Open $tag() -->
+    <scope name="nml.element.block.open">
+      <starts-with>
+        <expression>(\$)([a-zA-Z][a-zA-Z0-9-]*)(\()</expression>
+        <capture number="1" name="nml.element.block.sigil" />
+        <capture number="2" name="nml.element.block.tag" />
+        <capture number="3" name="nml.element.block.attributes.begin" />
+      </starts-with>
+      <ends-with>
+        <expression>\)</expression>
+        <capture number="0" name="nml.element.block.attributes.end" />
+      </ends-with>
+      <subscopes>
+        <include syntax="self" collection="tag-attributes" />
+      </subscopes>
+    </scope>
+
+    <!-- Block Element Close %tag -->
+    <scope name="nml.element.block.close">
+      <expression>(%)([a-zA-Z][a-zA-Z0-9-]*)</expression>
+      <capture number="1" name="nml.element.block.close.sigil" />
+      <capture number="2" name="nml.element.block.close.tag" />
+    </scope>
+
+    <!-- Inline Element @tag() -->
+    <scope name="nml.element.inline">
+      <starts-with>
+        <expression>(@)([a-zA-Z][a-zA-Z0-9-]*)(\()</expression>
+        <capture number="1" name="nml.element.inline.sigil" />
+        <capture number="2" name="nml.element.inline.tag" />
+        <capture number="3" name="nml.element.inline.attributes.begin" />
+      </starts-with>
+      <ends-with>
+        <expression>/?)</expression>
+        <capture number="0" name="nml.element.inline.end" />
+      </ends-with>
+      <subscopes>
+        <include syntax="self" collection="tag-attributes" />
+      </subscopes>
+    </scope>
+
+    <!-- Text Interpolation {var} -->
+    <scope name="nml.interpolation.content">
+      <starts-with>
+        <expression>(?&lt;!\$)\{</expression>
+        <capture number="0" name="nml.interpolation.begin" />
+      </starts-with>
+      <ends-with>
+        <expression>\}</expression>
+        <capture number="0" name="nml.interpolation.end" />
+      </ends-with>
+      <subscopes>
+        <scope name="nml.interpolation.variable">
+          <expression>[^}]+</expression>
+        </scope>
+      </subscopes>
+    </scope>
+
+    <!-- Strings -->
+    <include syntax="self" collection="strings" />
+
+  </scopes>
+
+  <collections>
+
+    <collection name="tag-attributes">
+      <include syntax="self" collection="strings" />
+
+      <scope name="nml.attribute.spread">
+        <expression>(\.\.\.)([a-zA-Z_][a-zA-Z0-9_]*)</expression>
+        <capture number="1" name="nml.attribute.spread.operator" />
+        <capture number="2" name="nml.attribute.spread.name" />
+      </scope>
+
+      <scope name="nml.attribute.name">
+        <expression>([a-zA-Z_][a-zA-Z0-9_-]*)\s*(:)</expression>
+        <capture number="1" name="nml.attribute.name.key" />
+        <capture number="2" name="nml.attribute.name.separator" />
+      </scope>
+
+      <scope name="nml.interpolation.string">
+        <starts-with>
+          <expression>\$\{</expression>
+          <capture number="0" name="nml.interpolation.string.begin" />
+        </starts-with>
+        <ends-with>
+          <expression>\}</expression>
+          <capture number="0" name="nml.interpolation.string.end" />
+        </ends-with>
+        <subscopes>
+          <scope name="nml.interpolation.string.variable">
+            <expression>[^}]+</expression>
+          </scope>
+        </subscopes>
+      </scope>
+    </collection>
+
+    <collection name="strings">
+      <scope name="nml.string.double-quoted">
+        <starts-with>
+          <expression>&quot;</expression>
+          <capture number="0" name="nml.string.double-quoted.begin" />
+        </starts-with>
+        <ends-with>
+          <expression>&quot;</expression>
+          <capture number="0" name="nml.string.double-quoted.end" />
+        </ends-with>
+        <subscopes>
+          <include syntax="self" collection="string-interpolation" />
+          <include syntax="self" collection="escape" />
+        </subscopes>
+      </scope>
+
+      <scope name="nml.string.single-quoted">
+        <starts-with>
+          <expression>'</expression>
+          <capture number="0" name="nml.string.single-quoted.begin" />
+        </starts-with>
+        <ends-with>
+          <expression>'</expression>
+          <capture number="0" name="nml.string.single-quoted.end" />
+        </ends-with>
+        <subscopes>
+          <include syntax="self" collection="string-interpolation" />
+          <include syntax="self" collection="escape" />
+        </subscopes>
+      </scope>
+
+      <scope name="nml.string.backtick">
+        <starts-with>
+          <expression>`</expression>
+          <capture number="0" name="nml.string.backtick.begin" />
+        </starts-with>
+        <ends-with>
+          <expression>`</expression>
+          <capture number="0" name="nml.string.backtick.end" />
+        </ends-with>
+        <subscopes>
+          <include syntax="self" collection="string-interpolation" />
+          <include syntax="self" collection="escape" />
+        </subscopes>
+      </scope>
+    </collection>
+
+    <collection name="string-interpolation">
+      <scope name="nml.interpolation.string">
+        <starts-with>
+          <expression>\$\{</expression>
+          <capture number="0" name="nml.interpolation.string.begin" />
+        </starts-with>
+        <ends-with>
+          <expression>\}</expression>
+          <capture number="0" name="nml.interpolation.string.end" />
+        </ends-with>
+        <subscopes>
+          <scope name="nml.interpolation.string.variable">
+            <expression>[^}]+</expression>
+          </scope>
+        </subscopes>
+      </scope>
+    </collection>
+
+    <collection name="escape">
+      <scope name="nml.escape">
+        <expression>\\.</expression>
+      </scope>
+    </collection>
+
+  </collections>
+
+</syntax>
