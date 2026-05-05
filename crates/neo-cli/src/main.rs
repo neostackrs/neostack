@@ -1,20 +1,29 @@
-use clap::{Parser, Subcommand};
+use clap::{Command, arg};
 
-#[derive(Parser)]
-#[command(name = "neo")]
-#[command(version)]
-#[command(about = "NeoStack Static Site Generator", long_about = None)]
-pub struct Cli {
-    #[command(subcommand)]
-    pub command: Commands,
-
-    #[arg(short= "V", long, global = true)]
-    pub verbose: bool,
-    #[arg(short, long, global = true)]
-    pub quiet: bool,
+fn cli() -> Command {
+    Command::new("neo-cli")
+        .about("A command-line interface for NeoStackRS Static Site Generator")
+        .version(env!("CARGO_PKG_VERSION"))
+        .arg_required_else_help(true)
+        .allow_external_subcommands(true)
+        .subcommand(
+            Command::new("new")
+                .about("Create a new NeoStackRS project")
+                .arg(arg!(<INPUT> "The input directory containing source files").required(true))
+                .arg(arg!(--template -t [TEMPLATE] "The template to use for the new project").required(false))
+        )
 }
 
-#[derive(Parser, Subcommand)]
-pub enum Commands {}
+pub fn main() {
+    let matches = cli().get_matches();
 
-pub fn main() {}
+    match matches.subcommand() {
+        Some(("new", sub_matches)) => {
+            let input = sub_matches.get_one::<String>("INPUT").unwrap();
+            let template = sub_matches.get_one::<String>("template").unwrap_or(&String::from("default"));
+            println!("Input: {}", input);
+            println!("Template: {}", template);
+        }
+        _ => unreachable!(), // clap will ensure we don't get here
+    }
+}
