@@ -73,3 +73,5 @@ pub enum ConfigCommands {
     #[command(alias = "ls")]
     Show,
 }
+
+pub fn main() {}
