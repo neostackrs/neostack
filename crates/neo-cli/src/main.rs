@@ -18,7 +18,7 @@ pub fn main() {
     let matches = cli().get_matches();
 
     match matches.subcommand() {
-        Some(("new", sub_matches)) => {
+        Some(("new", _sub_matches)) => {
             println!("Creating a new NeoStackRS project...");
         }
         _ => unreachable!(), // clap will ensure we don't get here
