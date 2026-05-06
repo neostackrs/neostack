@@ -1,6 +1,6 @@
 use clap::{Command, arg};
 
-fn global_args() -> [clap::Arg; 7] {
+fn global_args() -> [clap::Arg; 6] {
     [
         arg!(--verbose -V "Increase output verbosity").global(true),
         arg!(--quiet -q "Decrease output verbosity").global(true),
