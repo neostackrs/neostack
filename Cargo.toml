@@ -1,6 +1,10 @@
 [workspace]
 members = [
-    "crates/neo",
-    "crates/neo-ml*",
+    "crates/*",
 ]
 resolver = "3"
+
+[workspace.dependencies]
+clap = { version = "4.6.1", features = ["derive"] }
+tokio = "1.52.2"
+tower-lsp-server = "0.23.0"

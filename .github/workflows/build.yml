@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://www.schemastore.org/github-action.json
 name: Build and Release
 
 on:
@@ -26,20 +27,16 @@ jobs:
           - os: macos-latest
             target: aarch64-apple-darwin
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v6
-      
-      - name: Set up Rust
-        uses: dtolnay/rust-toolchain@stable
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
         with:
           target: ${{ matrix.target }}
+      - uses: jdx/mise-action@v4
       
-      - name: Build packages
+      - name: Build packages (linux-aarch64) # for linux aarch64/musl targets, we need to use cross to build the binaries since they require a different toolchain
         if: matrix.target == 'aarch64-unknown-linux-gnu'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu
-          cargo build --workspace --release --target ${{ matrix.target }}
+        run: 
+          cross build --workspace --release --target ${{ matrix.target }}
       
       - name: Build packages
         run: cargo build --workspace --release --target ${{ matrix.target }}

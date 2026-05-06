@@ -1,0 +1,15 @@
+amends "package://github.com/jdx/hk/releases/download/v1.34.0/hk@1.34.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v1.34.0/hk@1.34.0#/Builtins.pkl"
+
+local linters = new Mapping<String, Step> {
+    ["cargo-clippy"] = Builtins.cargoClippy
+    ["cargo-fmt"] = Builtins.cargoFmt
+    ["cargo-check"] = Builtins.cargoCheck
+}
+
+hooks {
+    // instead of pre-commit, you can instead define pre-push hooks
+    ["pre-push"] {
+        steps = linters
+    }
+}
